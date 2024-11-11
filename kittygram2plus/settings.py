@@ -126,14 +126,40 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+"""Разрешения на уровне проекта."""
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated', 
+        'rest_framework.permissions.IsAuthenticated',
     ],
+
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #    'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    # ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        # 'rest_framework.throttling.AnonRateThrottle',
+        # Не будем подключать класс AnonRateThrottle глобально.
+        # Подключим его только в тех view-классах или вьюсетах,
+        # где надо установить лимиты для анонимов.
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
+    # Устанавливаем кастомную пагинацию.
+    # 'DEFAULT_PAGINATION_CLASS': 'cats.pagination.CustomPagination',
+    # 'PAGE_SIZE': 10,
+    'DEFAULT_THROTTLE_RATES': {
+        # Но сами лимиты установим, и они будут доступны из всего кода проекта
+        'user': '10000/day',  # Лимит для UserRateThrottle
+        'anon': '1000/day',  # Лимит для AnonRateThrottle
+        # Имена (ключи) для scope придумывает разработчик,
+        # в меру собственной фантазии
+        'low_request': '30/minute',
+    }
 }
 
 SIMPLE_JWT = {

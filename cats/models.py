@@ -7,6 +7,8 @@ CHOICES = (
     ('White', 'Белый'),
     ('Ginger', 'Рыжий'),
     ('Mixed', 'Смешанный'),
+    ('Yellow', 'Желтый'),
+    ('Green', 'Зеленый '),
 )
 
 User = get_user_model()

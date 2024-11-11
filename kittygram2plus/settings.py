@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'cats.apps.CatsConfig',
+    'django_filters',
+    # Обратите внимание: библиотека django-filter, а приложение django_filters
 ]
 
 MIDDLEWARE = [

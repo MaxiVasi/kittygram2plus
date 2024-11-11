@@ -1,3 +1,5 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.pagination import PageNumberPagination
@@ -34,6 +36,30 @@ class CatViewSet(viewsets.ModelViewSet):
     # pagination_class = LimitOffsetPagination
     # Или кастомный пагинатор
     pagination_class = CatsPagination
+
+    # Указываем фильтрующий бэкенд DjangoFilterBackend
+    # Из библиотеки django-filter
+    # Добавим в кортеж ещё один бэкенд
+    filter_backends = (DjangoFilterBackend,
+                       filters.SearchFilter,
+                       filters.OrderingFilter)
+    # Временно отключим пагинацию на уровне вьюсета,
+    # так будет удобнее настраивать фильтрацию
+    pagination_class = None
+    # Фильтровать будем по полям color и birth_year модели Cat
+    # http://127.0.0.1:8000/cats/?color=Black
+    filterset_fields = ('color', 'birth_year')
+    search_fields = ('name',)
+    # Поиск можно проводить и по содержимому полей связанных моделей.
+    # Доступные для поиска поля связанной модели указываются через нотацию
+    # с двойным подчёркиванием: ForeignKey текущей модели__имя поля
+    # в связанной модели.
+    # http://127.0.0.1:8000/cats/?search=Бар
+    # search_fields = ('achievements__name', 'owner__username')
+    # Сортировка выдачи: бэкенд OrderingFilter /cats/?ordering=name
+    ordering_fields = ('name', 'birth_year')
+    # Сортировка по умолчанию.
+    ordering = ('birth_year',)
 
     def get_permissions(self):
 

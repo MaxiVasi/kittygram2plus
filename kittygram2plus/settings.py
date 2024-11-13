@@ -35,13 +35,24 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # Необходимо для swagger (по умолчанию включён)
+    'drf_yasg',  # Создание динамической документации.
     'rest_framework',
     'djoser',
     'cats.apps.CatsConfig',
     'django_filters',
     # Обратите внимание: библиотека django-filter, а приложение django_filters
 ]
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
